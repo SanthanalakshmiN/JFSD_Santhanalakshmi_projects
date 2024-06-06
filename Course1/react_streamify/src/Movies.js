@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Row, Col, CardGroup, Card, Button, Container, CardLink, NavLink } from "react-bootstrap";
+import { Row, Col, CardGroup, Card, Button, Container, CardLink, NavLink, CardFooter } from "react-bootstrap";
 import "./Main.css"
 import ScaleLoader from "react-spinners/ScaleLoader";
 
@@ -10,10 +10,20 @@ function Movies() {
   let [movielist, SetMovieList] = useState([{}]);
   let [search, setSearch] = useState("");
 
+  function getColor(vote) {
+    if(vote>= 8){
+        return 'green'
+    }else if(vote >= 5){
+        return "orange"
+    }else{
+        return 'red'
+    }
+}
+
 
   useEffect(() => {
-    axios.get("https://dummyapi.online/api/movies/")
-      .then(results => { SetMovieList(results.data) })
+    axios.get("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&api_key=4c9856363822bdb39f9cd73df304edfa")
+      .then(Response => { SetMovieList(Response.data.results) })
       .catch(e => console.log(e))
       setLoading(true);
       setTimeout(() => {
@@ -46,21 +56,23 @@ function Movies() {
       <Container>
         <Row class="RowDesign">
           {movielist.filter((searchValue => {
-            return search.toLowerCase() === '' ? searchValue : ( searchValue.movie.toLowerCase().includes(search) );
+            return search.toLowerCase() === '' ? searchValue : ( searchValue.original_title.toLowerCase().includes(search) );
           })).map(
-            searchValue => <Col md="4" key={searchValue.id}>
+            searchValue => <Col md="4"  className="equal-height-col" key={searchValue.id}>
               <div className="ToolBox">
                 <CardGroup>
 
-                  <Card>
+                  <Card >
+                  <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${searchValue.poster_path}`} alt="Movies" />
                     <Card.Body>
-                      <Card.Title>{searchValue.movie}</Card.Title>
+                      <Card.Title >{searchValue.original_title}</Card.Title>
                       <Card.Text>
-                        <span> Card Rating {searchValue.rating} </span>
+                       Genre : 
                       </Card.Text>
-                      <CardLink href={searchValue.imdb_url} target="blank">
-                        Click Here to check IMDB
-                      </CardLink>
+                      <CardFooter
+                     class = {  searchValue.vote_average >= 8 ? "text-success" : searchValue.vote_average >= 5 ? "text-info": "text-danger"}
+                        >  Rating : {searchValue.vote_average} 
+                      </CardFooter>
                     </Card.Body>
                   </Card>
                 </CardGroup>
