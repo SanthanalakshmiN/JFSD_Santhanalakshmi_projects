@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 function Movies() {
   let [Loading, setLoading] = useState("false");
   let [movielist, SetMovieList] = useState([{}]);
-  let [error, setError] = useState("false");
+  let [Error, setError] = useState("false");
   let [result, setResult] = useState([{}]);
 
   let [text, setText] = useState("");
@@ -25,12 +25,12 @@ function Movies() {
       .catch(e => console.log(e))
   }
 
-  console.log(result);
+ 
 
   useEffect(() => {
-    axios.get("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&api_key=4c9856363822bdb39f9cd73df304edfa")
+    axios.get(`${api.api_search_url}`)
       .then(Response => { SetMovieList(Response.data.results) })
-      .catch(e => console.log(e))
+      .catch(e => alert("Error while Fetching data"))
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -65,13 +65,17 @@ function Movies() {
 
         </form>
       </header>
-      {Loading ? <ScaleLoader
+      { 
+     
+      Loading ? <ScaleLoader
         color={'#a83283'}
         loading={Loading}
         size={150}
         aria-label="Loading Spinner"
         data-testid="loader"
-      /> : text === ''?
+      /> :  ( text !== ''  &&  result == '' )
+      ? <span className="text-danger"> please provide valid search </span> :
+      text === '' ?
         <Container>
           <Row className="RowDesign">
             {movielist.map(
@@ -105,6 +109,7 @@ function Movies() {
           </Row>
 
         </Container> :
+       
           <Container>
           <Row className="RowDesign">
             {result.map(
@@ -139,6 +144,8 @@ function Movies() {
 
         </Container>
       }
+
+ 
     </div>
   )
 }
