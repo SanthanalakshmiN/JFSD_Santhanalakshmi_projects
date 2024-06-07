@@ -2,17 +2,20 @@ import { useState } from "react"
 import MyContext from "./Context"
 import Header from "./Header"
 import Movies from "./Movies";
+import Genre from "./Genre";
+import Footer from "./Footer";
+
 
 
 function Main() {
-    const [text, setText] = useState("");
+ 
+    
     return (
         <div>
-            <MyContext.Provider value={{ text, setText }}>
-                <Header />
-                <Movies />
-            </MyContext.Provider>
-
+           
+         <Movies />
+          
+<Footer/>
         </div>
     )
 }

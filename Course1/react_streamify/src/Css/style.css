@@ -42,6 +42,7 @@ header{
     color:#691111;
     font-family: inherit;
    align-self: flex-start;
+  
 }
 
 .search:focus{
@@ -50,7 +51,11 @@ header{
 }
 
 .search::placeholder{
-    color: #7378c5;
+    color: #c5a273;
+}
+
+#nav-dropdown{
+    color: #c5a273;
 }
 
 .nav:focus{
