@@ -16,7 +16,7 @@ function Movies() {
 
   let [text, setText] = useState("");
 
-  let data = useSelector(gv=>gv.genres);
+  let data = useSelector(gv => gv.genres);
 
   let handleSearch = (event) => {
 
@@ -24,8 +24,6 @@ function Movies() {
       .then(Response => { setResult(Response.data.results) })
       .catch(e => console.log(e))
   }
-
- 
 
   useEffect(() => {
     axios.get(`${api.api_search_url}`)
@@ -40,8 +38,6 @@ function Movies() {
   return (
     <div>
       <header>
-
-
         <NavDropdown title="Categories" id="nav-dropdown" className="nav">
           {
             data.map(p =>
@@ -51,101 +47,92 @@ function Movies() {
           }
         </NavDropdown>
 
-
-
         <form id="form" onSubmit={handleSearch()}>
-
-
-
-
           <input type="text" id="search" placeholder="Search Movies" className="search"
             onChange={e => setText(e.target.value)} />
-
-
-
         </form>
       </header>
-      { 
-     
-      Loading ? <ScaleLoader
-        color={'#a83283'}
-        loading={Loading}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      /> :  ( text !== ''  &&  result == '' )
-      ? <span className="text-danger"> please provide valid search </span> :
-      text === '' ?
-        <Container>
-          <Row className="RowDesign">
-            {movielist.map(
-              searchValue => <Col md="4" className="equal-height-col" key={searchValue.id}>
-                <div className="ToolBox">
-                  <CardGroup>
+      {
 
-                    <Card >
-                      <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${searchValue.poster_path}`} alt="Movies" />
-                      <Card.Body>
-                        <Card.Title >{searchValue.title}</Card.Title>
+        Loading ? <ScaleLoader
+          color={'#a83283'}
+          loading={Loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        /> : (text !== '' && result == '')
+          ? <span className="text-danger"> please provide valid search </span> :
+          text === '' ?
+            <Container>
+              <Row className="RowDesign">
+                {movielist.map(
+                  searchValue => <Col md="4" className="equal-height-col" key={searchValue.id}>
+                    <div className="ToolBox">
+                      <CardGroup>
 
-                        <CardFooter
-                          className={searchValue.vote_average >= 8 ?
-                            "text-success" :
-                            searchValue.vote_average >= 5 ?
-                              "text-info" : "text-danger"}
-                        >  Rating : {searchValue.vote_average}
-                        </CardFooter>
-                      </Card.Body>
-                    </Card>
-                  </CardGroup>
+                        <Card >
+                          <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${searchValue.poster_path}`} alt="Movies" />
+                          <Card.Body>
+                            <Card.Title >{searchValue.title}</Card.Title>
 
-                </div>
+                            <CardFooter
+                              className={searchValue.vote_average >= 8 ?
+                                "text-success" :
+                                searchValue.vote_average >= 5 ?
+                                  "text-info" : "text-danger"}
+                            >  Rating : {searchValue.vote_average}
+                            </CardFooter>
+                          </Card.Body>
+                        </Card>
+                      </CardGroup>
 
-              </Col>
+                    </div>
 
-
-            )}
-
-          </Row>
-
-        </Container> :
-       
-          <Container>
-          <Row className="RowDesign">
-            {result.map(
-              searchValue => <Col md="4" className="equal-height-col" key={searchValue.id}>
-                <div className="ToolBox">
-                  <CardGroup>
-
-                    <Card >
-                      <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${searchValue.poster_path}`} alt="Movies" />
-                      <Card.Body>
-                        <Card.Title >{searchValue.title}</Card.Title>
-
-                        <CardFooter
-                          className={searchValue.vote_average >= 8 ?
-                            "text-success" :
-                            searchValue.vote_average >= 5 ?
-                              "text-info" : "text-danger"}
-                        >  Rating : {searchValue.vote_average}
-                        </CardFooter>
-                      </Card.Body>
-                    </Card>
-                  </CardGroup>
-
-                </div>
-
-              </Col>
+                  </Col>
 
 
-            )}
+                )}
 
-          </Row>
+              </Row>
 
-        </Container>
+            </Container> :
+
+            <Container>
+              <Row className="RowDesign">
+                {result.map(
+                  searchValue => <Col md="4" className="equal-height-col" key={searchValue.id}>
+                    <div className="ToolBox">
+                      <CardGroup>
+
+                        <Card >
+                          <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${searchValue.poster_path}`} alt="Movies" />
+                          <Card.Body>
+                            <Card.Title >{searchValue.title}</Card.Title>
+
+                            <CardFooter
+                              className={searchValue.vote_average >= 8 ?
+                                "text-success" :
+                                searchValue.vote_average >= 5 ?
+                                  "text-info" : "text-danger"}
+                            >  Rating : {searchValue.vote_average}
+                            </CardFooter>
+                          </Card.Body>
+                        </Card>
+                      </CardGroup>
+
+                    </div>
+
+                  </Col>
+
+
+                )}
+
+              </Row>
+
+            </Container>
       }
 
- 
+
     </div>
   )
 }
